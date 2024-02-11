@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class PointManager : MonoBehaviour
 {
+    public AudioSource plusSound;
     private int points = 0;
     private TMP_Text pointsUI;
     private GameOverEvent gameOverEvent;
@@ -18,6 +19,7 @@ public class PointManager : MonoBehaviour
         ghost = GameObject.FindGameObjectWithTag("Player");
         gameOverEvent = GameHelper.GetGameOverEvent();
         gameStartEvent = GameHelper.GetGameStartEvent();
+        plusSound = Instantiate(plusSound);
 
         // Subcribe event.
         gameStartEvent.OnGameStart += SetZero;
@@ -54,6 +56,9 @@ public class PointManager : MonoBehaviour
             // Plus point.
             points += 1;
             pointsUI.text = points.ToString();
+
+            // Play sound.
+            plusSound.Play();
             
             // Mark "tree" object is plused point.
             treeScript.SetIsAccessed(true);

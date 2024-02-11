@@ -5,6 +5,8 @@ using UnityEngine;
 public class GhostController : MonoBehaviour
 {
     public bool IsCollided {get; private set;}
+    public AudioSource jumpSound;
+    public AudioSource collidedSound;
     public float speedUp = 3.0f;
     private float velocity;
     private Vector3 initPosition;
@@ -20,6 +22,8 @@ public class GhostController : MonoBehaviour
         StopController = new StopObjectController();
         pauseController = GameHelper.GetPauseController();
         gameStartEvent = GameHelper.GetGameStartEvent();
+        jumpSound = Instantiate(jumpSound);
+        collidedSound = Instantiate(collidedSound);
 
         // Subcribe event.
         gameStartEvent.OnGameStart += SetupOnGameStart;
@@ -44,6 +48,7 @@ public class GhostController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space)) {
             velocity = speedUp;
+            jumpSound.Play();
         }
 
         transform.Translate(0, velocity * Time.deltaTime, 0);
@@ -58,6 +63,7 @@ public class GhostController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        collidedSound.Play();
         IsCollided = true;
     }
 

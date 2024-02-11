@@ -7,6 +7,7 @@ public class GameOverEvent : MonoBehaviour
 {
     public event Action OnGameOver;
     public bool IsOver {get; private set;}
+    public AudioSource overSound;
     private GameObject ghost;
     private GhostController ghostScript;
     private GameStartEvent gameStartEvent;
@@ -17,6 +18,7 @@ public class GameOverEvent : MonoBehaviour
         ghost = GameObject.FindGameObjectWithTag("Player");
         ghostScript = ghost.GetComponent<GhostController>();
         gameStartEvent = GameHelper.GetGameStartEvent();
+        overSound = Instantiate(overSound);
 
         // Subcribe event.
         gameStartEvent.OnGameStart += UnOver;
@@ -36,6 +38,7 @@ public class GameOverEvent : MonoBehaviour
     private void TriggerGameOver()
     {
         if (ghostScript.IsCollided && ! IsOver) {
+            overSound.Play();
             OnGameOver?.Invoke();
             IsOver = true;
             Debug.Log("game over!");
